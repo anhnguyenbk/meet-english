@@ -1,5 +1,5 @@
 # meet-english
-Find English partners near your
+Find English partners near you
 
 
 An Express application
