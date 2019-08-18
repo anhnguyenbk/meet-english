@@ -3,8 +3,8 @@ Find English partners near your
 
 
 An Express application
-1. Install
+1. Install\
 npm install
 
-2. Start
+2. Start\
 npm start
