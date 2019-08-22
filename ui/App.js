@@ -20,7 +20,7 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
-        const socket = socketIO('http://localhost:8080', {
+        const socket = socketIO('http://192.168.1.6:8080', {
             transports: ['websocket'], jsonp: false
         });
         socket.connect();
