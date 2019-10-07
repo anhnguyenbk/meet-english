@@ -1,90 +1,41 @@
-import React from 'react';
-import {StyleSheet, Text, View,  Alert} from 'react-native';
+import React from "react";
+import { createStackNavigator, createAppContainer } from "react-navigation";
 import socketIO from 'socket.io-client';
 
+import getEnvVars from './environment';
+import HomeScreen from "./screens/HomeScreen";
+import OnlineListScreen from "./screens/OnlineListScreen";
+import ChatScreen from "./screens/ChatScreen";
+
+const AppNavigator = createStackNavigator(
+    {
+        Home: HomeScreen,
+        OnlineList: OnlineListScreen,
+        ChatScreen: ChatScreen
+    },
+    {
+        initialRouteName: "Home"
+    }
+);
+
+const AppContainer = createAppContainer(AppNavigator);
+
 export default class App extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = { messages: [] };
-        this._addMesage = this._addMesage.bind(this);
-    }
-
-    self = this;
-
-    _addMesage(msg){
-        console.log(msg);
-        this.state.messages.push(msg);
-        this.setState({ messages: this.state.messages })
-    }
-
     componentDidMount() {
-        const socket = socketIO('http://192.168.1.6:8080', {
+        const socket = socketIO(getEnvVars().wsUrl, {
             transports: ['websocket'], jsonp: false
         });
         socket.connect();
-        socket.emit('username', 'iOS'); //TODO Input username
+        // socket.emit('username', 'iOS'); //TODO Input username
         socket.on('connect', () => {
             console.log('connected to socket server');
         });
+        // socket.on('chat_message', this._addMesage.bind(this));
 
-        socket.on('chat_message', this._addMesage.bind(this));
-    }
-
-    displayNameInput() {
-        // Works on both iOS and Android
-        Alert.alert(
-            'Alert Title',
-            'My Alert Msg',
-            [
-                {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-                {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                },
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ],
-            {cancelable: false},
-        );
+        global.socket = socket;
     }
 
     render() {
-        let CheckIndex = i => {
-            if((i % 2) == 0) {
-                return styles.gray
-            }
-        };
-
-        let rows = this.state.messages.map((r, i) => {
-            return <View key={ i } style={[styles.row, CheckIndex(i)]}>
-                <Text >Row { r }, Index { i }</Text>
-            </View>
-        });
-
-        return(
-            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <Text>Meet English</Text>
-                { rows }
-                {/*{this.displayNameInput()}*/}
-            </View>
-    )
+        return <AppContainer />;
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    row: {
-        height:40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderBottomColor: '#ededed',
-        borderBottomWidth: 1
-    },
-});
