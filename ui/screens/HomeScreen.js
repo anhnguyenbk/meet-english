@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View,  Alert, Button, TextInput} from 'react-native';
+import { createStore } from 'redux'
 
 export default class HomeScreen extends React.Component {
 
@@ -24,6 +25,7 @@ export default class HomeScreen extends React.Component {
                 />
                 <Button title="Chat now" onPress={() => {
                     global.socket.emit('username', this.state.text);
+                    this.props.dispatch({ type: 'USERNAME', value: this.state.text});
                     navigate('OnlineList');
                 }}  />
             </View>

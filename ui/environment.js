@@ -2,13 +2,16 @@ import Constants from 'expo-constants';
 
 const ENV = {
     dev: {
-        wsUrl: 'ws://192.168.1.3:8080'
+        wsUrl: 'ws://192.168.1.7:8080',
+        usersUrl: 'http://192.168.1.7:8080/api/users'
     },
     staging: {
-        wsUrl: 'ws://192.168.1.3:8080'
+        wsUrl: 'ws://192.168.1.3:8080',
+        usersUrl: 'http://192.168.1.7:8080/api/users'
     },
     prod: {
-        wsUrl: 'ws://192.168.1.3:8080'
+        wsUrl: 'ws://192.168.1.3:8080',
+        usersUrl: 'http://192.168.1.7:8080/api/users'
     }
 };
 
